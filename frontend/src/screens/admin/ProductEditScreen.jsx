@@ -1,65 +1,89 @@
-
-import { useState,useEffect } from "react"
-import {Link,useNavigate,useParams} from 'react-router-dom';
-import {Form,Button} from 'react-bootstrap';
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
 import Message from "../../components/Message";
-import Loader from "../../components/Loader"
+import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
-import {toast} from "react-toastify";
-import { useUpdateProductMutation,useGetProductDetailsQuery } from "../../slices/productsApiSlice";
-
+import { toast } from "react-toastify";
+import {
+  useUpdateProductMutation,
+  useGetProductDetailsQuery,
+  useUploadProductImageMutation,
+  
+} from "../../slices/productsApiSlice";
 
 const ProductEditScreen = () => {
-  const {id:productId}=useParams();
+  const { id: productId } = useParams();
 
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
+  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("");
+  const [countInStock, setCountInStock] = useState("");
+  const [description, setDescription] = useState("");
 
-  const [name,setName]=useState('');
-  const [price,setPrice]=useState('');
-  const [image,setImage]=useState('');
-  const [brand,setBrand]=useState('');
-  const [category,setCategory]=useState('');
-  const [countInStock,setCountInStock]=useState('');
-  const [description,setDescription]=useState('');
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useGetProductDetailsQuery(productId);
 
-  const { data:product,isLoading,error}=useGetProductDetailsQuery(productId)
+  const [updateProduct, { isLoading: loadingUpdate }] =
+    useUpdateProductMutation();
 
+  const [uploadProductImage, { isLoading: loadingUpload}] =
+    useUploadProductImageMutation();
 
-const [updateProduct,{isLoading:loadingUpdate}]=useUpdateProductMutation();
+  const navigate = useNavigate();
 
-const navigate=useNavigate();
+  useEffect(() => {
+    if (product) {
+      setName(product.name);
+      setPrice(product.price);
+      setImage(product.image);
+      setBrand(product.brand);
+      setCategory(product.category);
+      setCountInStock(product.countInStock);
+      setDescription(product.description);
+    }
+  }, [product]);
 
-useEffect(()=>{
-  if(product){
-    setName(product.name)
-    setPrice(product.price);
-    setImage(product.image);
-    setBrand(product.brand);
-    setCategory(product.category);
-    setCountInStock(product.countInStock);
-    setDescription(product.description);
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const updatedProduct = {
+      productId,
+      name,
+      price,
+      image,
+      brand,
+      category,
+      countInStock,
+      description,
+    };
+
+    const result = await updateProduct(updatedProduct);
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      toast.success("Product Updated");
+      navigate("/admin/productlist");
+    }
+  };
+
+  const uploadFileHandler=async (e)=>{
+    const formData=new FormData();
+    formData.append('image',e.target.files[0])
+    console.log(formData);
+
+    try {
+      const res=await uploadProductImage(formData).unwrap();
+      toast.success(res.message);
+      setImage(res.image);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   }
-
-},[product])
-
-
-const submitHandler=async (e)=>{
-  e.preventDefault();
-  const updatedProduct={
-    productId,
-    name,
-    price,
-    image,brand,category,countInStock,
-    description
-  }
-
-  const result=await updateProduct(updatedProduct);
-  if(result.error){
-    toast.error(result.error);
-  }else {
-    toast.success('Product Updated');
-    navigate('/admin/productlist')
-  }
-}
 
   return (
     <>
@@ -93,7 +117,21 @@ const submitHandler=async (e)=>{
                 onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            {/* Image input placeholder */}
+            <Form.Group controlId="image" className="my-2">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Image url"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <Form.Control
+                type="file"
+                label="Choose file"
+                onChange={uploadFileHandler}
+              ></Form.Control>
+              {loadingUpload && <Loader />}
+            </Form.Group>
             <Form.Group controlId="brand" className="my-2">
               <Form.Label>Brand</Form.Label>
               <Form.Control
@@ -133,18 +171,14 @@ const submitHandler=async (e)=>{
               ></Form.Control>
             </Form.Group>
 
-            <Button
-            type="submit"
-            variant="primary"
-            className="my-2"
-            >
-Update
+            <Button type="submit" variant="primary" className="my-2">
+              Update
             </Button>
           </Form>
         )}
       </FormContainer>
     </>
   );
-}
+};
 
-export default ProductEditScreen
+export default ProductEditScreen;
