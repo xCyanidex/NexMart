@@ -37,7 +37,7 @@ const PlaceOrderScreen = () => {
         totalPrice: cart.totalPrice,
       }).unwrap();
       dispatch(clearCartItems());
-      naviagate(`/order/${res._id}`);
+      naviagate(`/orders/${res._id}`);
     } catch (error) {
       toast.error(error);
     }

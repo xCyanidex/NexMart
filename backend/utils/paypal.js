@@ -64,7 +64,7 @@ export async function checkIfNewTransaction(orderModel, paypalTransactionId) {
 
 /**
  * Verifies a PayPal payment by making a request to the PayPal API.
- * @see {@link https://developer.paypal.com/docs/api/order/v2/#orders_get}
+ * @see {@link https://developer.paypal.com/docs/api/orders/v2/#orders_get}
  *
  * @param {string} paypalTransactionId - The PayPal transaction ID to be verified.
  * @returns {Promise<Object>} An object with properties 'verified' indicating if the payment is completed and 'value' indicating the payment amount.
@@ -74,7 +74,7 @@ export async function checkIfNewTransaction(orderModel, paypalTransactionId) {
 export async function verifyPayPalPayment(paypalTransactionId) {
     const accessToken = await getPayPalAccessToken();
     const paypalResponse = await fetch(
-        `${PAYPAL_API_URL}/v2/checkout/order/${paypalTransactionId}`,
+        `${PAYPAL_API_URL}/v2/checkout/orders/${paypalTransactionId}`,
         {
             headers: {
                 'Content-Type': 'application/json',
