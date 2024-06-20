@@ -16,37 +16,40 @@ import Loader from "../components/Loader";
 import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
-  useGetPayPalClientIdQuery,
+  useGetPaypalClientIdQuery,
   useDeliverOrderMutation
 } from "../slices/ordersApiSlice";
 
-const OrderScreen = () => {
-  const { id: orderId } = useParams();
+const   OrderScreen = () => {
+   const { id: orderId } = useParams();
 
-  const {
-    data: order,
-    refetch,
-    isLoading,
-    error,
-  } = useGetOrderDetailsQuery(orderId);
+   const {
+     data: order,
+     refetch,
+     isLoading,
+     error,
+   } = useGetOrderDetailsQuery(orderId);
 
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
 
-  const [deliverOrder,{isLoading:loadingDeliver}]=useDeliverOrderMutation();
+   const [deliverOrder, { isLoading: loadingDeliver }] =
+     useDeliverOrderMutation();
 
-  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+   const { userInfo } = useSelector((state) => state.auth);
 
-  const {
-    data: paypal,
-    isLoading: loadingPayPal,
-    error: errorPaypal,
-  } = useGetPayPalClientIdQuery();
+   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
-  const { userInfo } = useSelector((state) => state.auth);
+   const {
+     data: paypal,
+     isLoading: loadingPayPal,
+     error: errorPayPal,
+   } = useGetPaypalClientIdQuery();
+
+  
 
   useEffect(() => {
-    if (!errorPaypal && !loadingPayPal && paypal.clientId) {
-      const loadPayPalScript = async () => {
+    if (!errorPayPal && !loadingPayPal && paypal.clientId) {
+      const loadPaypalScript = async () => {
         paypalDispatch({
           type: "resetOptions",
           value: {
@@ -58,11 +61,11 @@ const OrderScreen = () => {
       };
       if (order && !order.isPaid) {
         if (!window.paypal) {
-          loadPayPalScript();
+          loadPaypalScript();
         }
       }
     }
-  }, [order, paypal, paypalDispatch, loadingPayPal, errorPaypal]);
+  }, [errorPayPal, loadingPayPal, order, paypal, paypalDispatch]);
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
