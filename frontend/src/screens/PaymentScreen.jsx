@@ -46,7 +46,7 @@ navigate('/placeorder')
             ></Form.Check>
           </Col>
         </Form.Group>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="secondary">
           Continue
         </Button>
       </Form>

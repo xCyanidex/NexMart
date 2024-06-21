@@ -51,7 +51,7 @@ try {
           <h1 className="h1">Products</h1>
         </Col>
         <Col className="  text-end">
-          <Button className="btn-sm-3 m-3" onClick={createProductHandler}>
+          <Button className="btn-sm-3 m-3" variant="secondary" onClick={createProductHandler}>
             <FaEdit /> Create Product
           </Button>
         </Col>

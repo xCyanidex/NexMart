@@ -9,7 +9,7 @@ const currentYear=new Date().getFullYear();
         <Container>
             <Row>
                 <Col className='text-center py-3'>
-                    <p>ProShop &copy; {currentYear}</p>
+                    <p>NexMart &copy; {currentYear}</p>
                 </Col>
             </Row>
         </Container>

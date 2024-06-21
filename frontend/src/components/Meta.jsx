@@ -1,6 +1,7 @@
 import {Helmet} from 'react-helmet-async';
 
 
+// eslint-disable-next-line react/prop-types
 const Meta = ({title,description,keywords}) => {
   return (
     <Helmet>
@@ -11,10 +12,10 @@ const Meta = ({title,description,keywords}) => {
   );
 }
 
-Meta.defaultProps={
-    title:"Wellcome to ProShop",
-    description:"We sell the best products for cheap",
-    keywords:"electronics, buy electronics, cheap electronics",
-}
+Meta.defaultProps = {
+  title: "NexMart",
+  description: "Simplify Your Shopping Journey",
+  keywords: "electronics, buy electronics, cheap electronics, consoles, mobile, tv",
+};
 
 export default Meta

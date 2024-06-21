@@ -173,7 +173,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Button type="submit" variant="primary" className="my-2">
+            <Button type="submit" variant="secondary" className="my-2">
               Update
             </Button>
           </Form>

@@ -231,6 +231,7 @@ return orderId;
                 !order.isDelivered && (
                   <ListGroup.Item>
                     <Button
+                    variant="secondary"
                       type="button"
                       className="btn btn-block"
                       onClick={deliverOrderHandler}

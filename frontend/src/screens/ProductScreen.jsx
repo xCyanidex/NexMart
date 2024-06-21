@@ -10,6 +10,7 @@ import Rating from "../components/Rating";
 import {toast} from 'react-toastify';
 import Loader from "../components/Loader";
 import Meta from "../components/Meta";
+import DotLoader from "../components/DotLoader";
 
 
 const ProductScreen = () => {
@@ -60,7 +61,7 @@ const { data: product, isLoading, error,refetch } = useGetProductDetailsQuery(pr
         Go Back
       </Link>
       {isLoading ? (
-        <h2>Loading...</h2>
+        <DotLoader/>
       ) : error ? (
         <Message variant="danger">
           {error?.data?.message || error.error}
@@ -167,7 +168,7 @@ const { data: product, isLoading, error,refetch } = useGetProductDetailsQuery(pr
                 ))}
                 <ListGroup.Item>
                   <h2>Write a Customer Review</h2>
-                  {loadingProductReview && <Loader/>}
+                  {loadingProductReview && <DotLoader/>}
 
                   {userInfo ? (
                     <Form onSubmit={submitHandler}>
@@ -209,7 +210,7 @@ Select...
                         </Form.Group>
                  <Button
                  disabled={loadingProductReview}
-                  variant='primary'
+                  variant='secondary'
                   type='submit'
                  >
 Submit

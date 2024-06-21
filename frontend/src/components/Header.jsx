@@ -6,7 +6,7 @@ import {useSelector,useDispatch} from 'react-redux';
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import {logout} from '../slices/authSlice'
 import SearchBox from "./SearchBox";
-import logo from '../assets/logo.png'
+import logo from '../assets/nexmart2.png'
 import { resetCart } from "../slices/cartSlice";
 function Header() {
 
@@ -30,12 +30,12 @@ function Header() {
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
+      <Navbar  variant="dark" expand="md" className=" bg-slate-600" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>
-              <img src={logo} alt="ProShop" />
-              ProShop
+              <img src={logo} alt="NexMart"width={150}  height={100} className="rounded"/>
+              
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
