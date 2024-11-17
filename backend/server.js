@@ -42,7 +42,7 @@ if(process.env.NODE_ENV==='production'){
     app.get('*',(req,res)=>
         res.sendFile(path.resolve(__dirname,'frontend','dist','index.html')))
 }else {
-    console.log("Reached ehre")
+    // console.log("Reached ehre")
     app.get('/', (req, res) => {
         res.send('Api is running');
     });
